@@ -1,13 +1,12 @@
-package com.github.jmora.scala.util.data.future
+package com.github.jmora.scala.util
 
-import org.specs2.mutable._
-import org.junit.runner.RunWith
-import org.specs2.runner.JUnitRunner
+import java.util.concurrent.TimeoutException
 import scala.compat.Platform
 import scala.concurrent.duration.Duration
-import java.util.concurrent.TimeoutException
-import com.github.jmora.scala.util.data.future.Lazy.Lazy
-import com.github.jmora.scala.util.data.future.Possibly.Possibly
+import org.junit.runner.RunWith
+import org.specs2.mutable.Specification
+import com.github.jmora.scala.util.boilerplate._
+import org.specs2.runner.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
 class PossiblyTests extends Specification {

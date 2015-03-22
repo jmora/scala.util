@@ -1,12 +1,10 @@
-package com.github.jmora.scala.util.data.future
-
-import org.specs2.mutable._
-import org.junit.runner.RunWith
-import org.specs2.runner.JUnitRunner
-
-import com.github.jmora.scala.util.data.future.Lazy.Lazy
+package com.github.jmora.scala.util
 
 import scala.compat.Platform
+import org.junit.runner.RunWith
+import org.specs2.mutable.Specification
+import com.github.jmora.scala.util.boilerplate._
+import org.specs2.runner.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
 class LazyTests extends Specification {
