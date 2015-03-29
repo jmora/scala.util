@@ -1,28 +1,37 @@
 package com.github.jmora.scala.util
 
-import java.util.concurrent.TimeoutException
 import scala.compat.Platform
-import scala.concurrent.duration.Duration
 import org.junit.runner.RunWith
 import org.specs2.mutable.Specification
 import com.github.jmora.scala.util.boilerplate._
 import org.specs2.runner.JUnitRunner
+import scala.concurrent.duration.Duration
+import java.util.concurrent.TimeoutException
 
 @RunWith(classOf[JUnitRunner])
-class PossiblyTests extends Specification {
+class SpecsBoilerplateTests extends Specification {
   val refTime: Long = 1000
   def passtime(): Boolean = { Thread.sleep(refTime); true }
+  // override def is =
+
+  "Lazy" should {
+    "not compute when not needed" in {
+      val (value, time) = Time { Lazy { passtime } }
+      time must beLessThan(refTime)
+    }
+    "compute when needed" in {
+      val lazyValue = Lazy { passtime }
+      val (value, time) = Time { lazyValue.value }
+      time must beGreaterThanOrEqualTo(refTime)
+    }
+  }
 
   "Possibly" should {
     "seem to be free" in {
-      val initialTime: Long = Platform.currentTime
-      val possibleValue = Possibly { passtime }
-      val secondTime: Long = Platform.currentTime
+      val (possibleValue, time1) = Time { Possibly { passtime } }
       passtime()
-      val thirdTime: Long = Platform.currentTime
-      val r = possibleValue.value
-      val overheadTime = Platform.currentTime - thirdTime + secondTime - initialTime
-      overheadTime must beLessThan(refTime)
+      val (r, time2) = Time { possibleValue.value }
+      (time1 + time2) must beLessThan(refTime)
     }
     "return the right value" in {
       val r = Possibly { passtime }.value
@@ -31,7 +40,7 @@ class PossiblyTests extends Specification {
     "fail with timeout when implicit" in {
       implicit val timeout: Duration = Duration.create(1, scala.concurrent.duration.MILLISECONDS)
       val r = Possibly { passtime }.value
-      (r must beFailedTry) && (r.get must throwAn[TimeoutException])
+      (r must beFailedTry) and (r.get must throwAn[TimeoutException])
     }
   }
 
