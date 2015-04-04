@@ -10,6 +10,7 @@ import scala.concurrent.Future
 import scala.concurrent.duration.Duration
 import scala.util.Try
 import scala.compat.Platform
+import scala.language.implicitConversions
 
 object boilerplate {
 
@@ -20,12 +21,12 @@ object boilerplate {
 
   object Lazy {
     def apply[T](body: => T): Lazy[T] = new Lazy(body)
+    implicit def lazy2Actual[T](lazyValue: Lazy[T]): T = lazyValue.value
   }
 
   type Possibly[+T] = Lazy[Try[T]]
-
   object Possibly {
-    def apply[T](body: => T)(implicit timeout: Duration = Duration.Inf): Possibly[T] = {
+    def apply[U](body: => U)(implicit timeout: Duration = Duration.Inf): Possibly[U] = {
       val futureValue = Future { Try { body } }
       Lazy { Try { Await.result(futureValue, timeout) }.flatten }
     }
@@ -44,7 +45,8 @@ object boilerplate {
     }
   }
 
-  // there may be
+  // there may be something already done in the standard library for this
+  // and it may change through versions of Scala...
   object Time {
     def apply[T](body: => T): (T, Long) = {
       val init = Platform.currentTime
@@ -53,5 +55,7 @@ object boilerplate {
       (r, time)
     }
   }
+
+  implicit def future2Present[T](future: Future[T]): T = Await.result(future, Duration.Inf)
 
 }
