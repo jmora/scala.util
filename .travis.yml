@@ -1,4 +1,6 @@
 language: scala
 scala:
    - 2.11.5
+script: "sbt ++$TRAVIS_SCALA_VERSION clean coverage \"test-only * -- -l com.github.jmora.tags.SlowTest\""
+after_success: "sbt coveralls"
    

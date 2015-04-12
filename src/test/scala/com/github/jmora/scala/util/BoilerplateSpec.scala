@@ -4,10 +4,13 @@ import org.scalatest.WordSpec
 import com.github.jmora.scala.util.boilerplate._
 import scala.concurrent.duration.Duration
 import java.util.concurrent.TimeoutException
+import org.scalatest.Tag
 
 class BoilerplateSpec extends WordSpec {
+
   val refTime: Long = 1000
   def passtime(): Boolean = { Thread.sleep(refTime); true }
+  def immediate(): Boolean = { true }
 
   "Lazy values" when {
     "not needed" should {
@@ -17,24 +20,28 @@ class BoilerplateSpec extends WordSpec {
       }
     }
     "needed" should {
-      "perform the computation" in {
+      "perform the computation" taggedAs (SlowTest) in {
         val lazyValue = Lazy { passtime }
         val (value, time) = Time { lazyValue.value }
         assert(time >= refTime)
       }
+      "return the right value" in {
+        assert(Lazy { immediate })
+      }
     }
+
   }
 
   "Possibly" when {
     "given enough time" should {
-      "seem to be free" in {
+      "seem to be free" taggedAs (SlowTest) in {
         val (possibleValue, time1) = Time { Possibly { passtime } }
         passtime()
         val (r, time2) = Time { possibleValue.value }
         assert((time1 + time2) < refTime)
       }
       "return the right value" in {
-        val r = Possibly { passtime }.value
+        val r = Possibly { immediate }.value
         assert(r.isSuccess && r.get)
       }
     }

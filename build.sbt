@@ -17,7 +17,7 @@ lazy val preferredSettings = Seq(
     ivyLoggingLevel := UpdateLogging.Full,
     // javaOptions += "-Xmx4G",
     shellPrompt in ThisBuild := { state => Project.extract(state).currentRef.project + "> " },
-    shellPrompt := { state => System.getProperty("user.name") + "> " }    
+    shellPrompt := { state => System.getProperty("user.name") + "> " }
 )
 
 lazy val root = (project in file(".")).
@@ -31,21 +31,3 @@ lazy val root = (project in file(".")).
     mainClass in (Compile, run) := mainapp,
     mainClass in (Test, run) := maintest
   )
-  
-/*
-val mainrun = Some("com.github.jmora.scala.util.App")
-val maintest = Some("com.github.jmora.scala.util.TestSuite")
-
-
-lazy val root = (project in file(".")).
-  settings(
-    name := "scala.util",
-    version := "0.0.1",
-    scalaVersion := "2.11.5",
-    mainClass in Compile := mainrun,
-    mainClass in assembly := mainrun,
-    mainClass in run := mainrun,
-    mainClass in test := maintest
-  )
-  
-  */

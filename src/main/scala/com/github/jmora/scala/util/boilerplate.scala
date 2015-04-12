@@ -32,19 +32,6 @@ object boilerplate {
     }
   }
 
-  // contrary to the previous companion objects, these are just functions that receive blocks
-  // (or not even blocks), so they may be expressed as functions (just plain functions)
-  // The point here is regularity and elegance, by now I'll delay that decision a bit more
-  object Surely {
-    def apply[T](futureValue: Future[T])(implicit timeout: Duration = Duration.Inf): T =
-      Await.result(futureValue, timeout)
-
-    def apply[T](body: => T): Lazy[T] = {
-      val futureValue = Future { body }
-      Lazy { Surely(futureValue) }
-    }
-  }
-
   // there may be something already done in the standard library for this
   // and it may change through versions of Scala...
   object Time {
