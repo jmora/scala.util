@@ -20,7 +20,7 @@ class PrefetchIterator[A](val inner: Iterator[A])(implicit timeout: Duration = D
   }
 
   // not to be mixed with the public methods...
-  override def lazyHasNext(): Boolean = inner.hasNext
-  override def lazyNext(): A = inner.next
+  override protected def lazyHasNext(): Boolean = inner.hasNext
+  override protected def lazyNext(): A = inner.next
 
 }

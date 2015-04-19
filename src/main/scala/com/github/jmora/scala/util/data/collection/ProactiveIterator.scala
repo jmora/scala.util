@@ -9,7 +9,7 @@ trait ProactiveIterator[+A] extends scala.collection.Iterator[A] {
   protected def lazyNext(): A
   protected def lazyHasNext(): Boolean
 
-  def iter(): Iterator[A] =
+  def iterator(): Iterator[A] =
     ((self: ProactiveIterator[A]) => new AbstractIterator[A] {
       def hasNext: Boolean = self.hasNext
       def next: A = self.next

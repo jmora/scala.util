@@ -6,11 +6,11 @@ import scala.io.Codec
 import com.github.jmora.scala.util.idioms.using
 import scala.collection.GenTraversableOnce
 
-object Sink {
+trait Sink {
+  def putLines(lines: GenTraversableOnce[String]): Unit
+}
 
-  abstract class Sink {
-    def putLines(lines: GenTraversableOnce[String]): Unit
-  }
+object Sink {
 
   class FileSink(val file: JFile, val codec: Codec) extends Sink {
     def putLines(lines: GenTraversableOnce[String]): Unit = {
