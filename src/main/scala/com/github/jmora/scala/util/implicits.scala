@@ -1,7 +1,8 @@
-package com.github.jmora.scala.util.data.collection.impl
+package com.github.jmora.scala.util
 
 import scala.language.implicitConversions
 import com.github.jmora.scala.util.data.collection.ProactiveIterator
+import com.github.jmora.scala.util.data.collection.PrefetchIterator
 
 object implicits {
 

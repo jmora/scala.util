@@ -43,6 +43,7 @@ object boilerplate {
     }
   }
 
+  implicit def present2Future[T](present: => T): Future[T] = Future { present }
   implicit def future2Present[T](future: Future[T]): T = Await.result(future, Duration.Inf)
 
 }
