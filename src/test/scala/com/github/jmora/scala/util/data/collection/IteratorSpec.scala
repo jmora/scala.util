@@ -25,10 +25,7 @@ class IteratorSpec extends FlatSpec {
   //    assert(t < refTime * 15)
   //  }
 
-  "A parallel map" should "return the correct results" in {
-    assert((1 to 14).toVector == ((1 to 14).iterator.pmap(x => x).toVector))
-  }
-  it should "have no problems with empty iteratios" in {
+  "A parallel map" should "have no problems with empty iteratios" in {
     assert(Vector() == ((1 until 1).iterator.pmap(x => x).toVector))
   }
   it should "have no problems with single elements" in {
@@ -37,6 +34,11 @@ class IteratorSpec extends FlatSpec {
   it should "be fast" taggedAs (SlowTest) in {
     val (r, t) = Time { (1 to 6).iterator.pmap(passtime).toVector }
     assert(t < refTime * 2)
+  }
+  it should "return correct results" in {
+    val end = Runtime.getRuntime.availableProcessors + 10
+    println(s"  - BTW, the number of processors is $end")
+    assert((1 to end).toVector == ((1 to end).iterator.pmap(x => x).toVector))
   }
 
 }

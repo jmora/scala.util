@@ -14,12 +14,4 @@ class CoverageReasonsSpec extends Spec {
       }
     }
   }
-  object `implicit Future` {
-    object `every time` {
-      def `should behave` {
-        val f = Future { true }
-        assert(f)
-      }
-    }
-  }
 }

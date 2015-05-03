@@ -7,7 +7,7 @@ import com.github.jmora.scala.util.boilerplate._
 
 trait ProactiveIterator[+A] extends scala.collection.Iterator[A] {
 
-  def prefetch() = this // for pimping purposes
+  def prefetch() = this // for extension purposes
   def pro() = this
   protected def lazyNext(): A
   protected def lazyHasNext(): Boolean
