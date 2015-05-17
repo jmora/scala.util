@@ -9,7 +9,7 @@ class ComposableIterator[+A] extends scala.collection.AbstractIterator[A] {
 
   val inner = new ArrayBuffer[Iterator[C]]
 
-  def composable = this
+  def compose = this
 
   def +:[B >: A](e: B) = Seq(e).iterator +: inner
 
@@ -17,7 +17,7 @@ class ComposableIterator[+A] extends scala.collection.AbstractIterator[A] {
 
   def ++[B >: A](that: ComposableIterator[B]) = inner ++ that.inner
 
-  def ++[B >: A](that: => Iterator[B]) = inner :+ new ProactiveIterator(that)
+  def ++[B >: A](that: () => Iterator[B]) = inner :+ LazyIterator(that)
 
   def ++[B >: A](that: Iterator[B]) = inner :+ that
 
