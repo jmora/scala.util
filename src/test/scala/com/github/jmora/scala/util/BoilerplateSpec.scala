@@ -1,10 +1,16 @@
 package com.github.jmora.scala.util
 
-import org.scalatest.WordSpec
-import com.github.jmora.scala.util.boilerplate._
-import scala.concurrent.duration.Duration
 import java.util.concurrent.TimeoutException
-import org.scalatest.Tag
+
+import scala.concurrent.duration.Duration
+
+import org.scalatest.WordSpec
+
+import com.github.jmora.scala.util.boilerplate.Lazy
+import com.github.jmora.scala.util.boilerplate.Possibly
+import com.github.jmora.scala.util.boilerplate.Time
+import com.github.jmora.scala.util.boilerplate.ints
+import com.github.jmora.scala.util.boilerplate.naturals
 
 class BoilerplateSpec extends WordSpec {
 
@@ -53,6 +59,19 @@ class BoilerplateSpec extends WordSpec {
           assert(r.isFailure || r.isSuccess)
           assert(r.get)
         }
+      }
+    }
+  }
+
+  "Iterables" when {
+    "getting values" should {
+      "provide them" in {
+        assert(naturals.take(3).toVector == (0 to 2).toVector)
+      }
+    }
+    "reusing them" should {
+      "provide the same values" in {
+        assert(ints.take(3).toVector == ints.take(3).toVector)
       }
     }
   }

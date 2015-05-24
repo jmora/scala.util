@@ -1,16 +1,13 @@
 package com.github.jmora.scala.util
 
-import scala.concurrent.duration.Duration
-import scala.concurrent.Future
-import scala.util.Try
-import scala.concurrent.Await
+import scala.collection.AbstractIterable
+import scala.compat.Platform
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.concurrent.duration.Duration
-import scala.util.Try
-import scala.compat.Platform
 import scala.language.implicitConversions
+import scala.util.Try
 
 object boilerplate {
 
@@ -45,5 +42,15 @@ object boilerplate {
 
   implicit def present2Future[T](present: => T): Future[T] = Future { present }
   implicit def future2Present[T](future: Future[T]): T = Await.result(future, Duration.Inf)
+
+  object Iterable {
+    def apply[T](giterator: => Iterator[T]): Iterable[T] =
+      new AbstractIterable[T] {
+        def iterator = giterator
+      }
+  }
+
+  val ints = Iterable { Iterator.range(Int.MinValue, Int.MaxValue) }
+  val naturals = Iterable { Iterator.range(0, Int.MaxValue) }
 
 }
