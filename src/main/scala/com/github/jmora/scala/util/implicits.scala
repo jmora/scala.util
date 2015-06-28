@@ -5,6 +5,7 @@ import com.github.jmora.scala.util.data.collection.ProactiveIterator
 import com.github.jmora.scala.util.data.collection.ComposableIterator
 import com.github.jmora.scala.util.data.collection.ParallelIterator
 import com.github.jmora.scala.util.data.collection.PrefetchIterator
+import com.github.jmora.scala.util.idioms.AnyWrap
 
 object implicits {
 
@@ -18,5 +19,10 @@ object implicits {
     r ++ that
     r
   }
+
+  // TODO: check whether this makes sense....
+  implicit def funcToTupled[A, B, Z](f: (A, B) => Z): (((A, B)) => Z) = f.tupled
+  implicit def funcToTupled[A, B, C, Z](f: (A, B, C) => Z): (((A, B, C)) => Z) = f.tupled
+  implicit def funcToTupled[A, B, C, D, Z](f: (A, B, C, D) => Z): (((A, B, C, D)) => Z) = f.tupled
 
 }

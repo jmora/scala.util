@@ -2,6 +2,8 @@ package com.github.jmora.scala.util
 
 import java.io.Closeable
 
+import scala.language.implicitConversions
+
 object idioms {
 
   def using[T <% Closeable, R](resource: T)(block: (T => R)): R = {
@@ -40,5 +42,14 @@ object idioms {
       }
     }
   }
+
+  //TODO: this could handle the "using" use cases, and be moved to implicits...
+  // or implicits could be moved here, call it sugar, then put boilerplate here too...
+  case class AnyWrap[A](wrapped: A) {
+    def |>[B](f: A => B): B = f(wrapped)
+  }
+
+  // TODO: so you are going to put implicits here now?
+  implicit def wrapped[A](a: A): AnyWrap[A] = AnyWrap(a)
 
 }
