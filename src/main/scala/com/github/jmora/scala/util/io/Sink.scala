@@ -2,11 +2,11 @@ package com.github.jmora.scala.util.io
 
 import java.io.{ File => JFile, OutputStream, PrintStream }
 import java.net.URI
-
 import scala.collection.GenTraversableOnce
 import scala.io.Codec
-
 import com.github.jmora.scala.util.idioms._
+import java.nio.file.Paths
+import java.nio.file.Files
 
 trait Sink {
   def putLines(lines: GenTraversableOnce[String]): Unit
@@ -16,7 +16,9 @@ object Sink {
 
   class FileSink(val file: JFile, val codec: Codec) extends Sink {
     def putLines(lines: GenTraversableOnce[String]): Unit = {
-      new JFile(file.getParent) |> { d => d.exists || d.mkdirs }
+      val parent = Paths get file.getAbsolutePath getParent ()
+      if (!(Files exists parent))
+        Files createDirectories parent
       using(new PrintStream(file, codec.name)) { ps =>
         lines foreach (ps println _)
         ps.flush
